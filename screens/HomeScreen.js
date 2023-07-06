@@ -8,7 +8,7 @@ import {
   TextInput,
   ScrollView,
 } from "react-native";
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
   AdjustmentsVerticalIcon,
@@ -21,11 +21,25 @@ import FeaturedRow from "../components/FeaturedRow";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
+  const [featuredCategories, setFeaturedCategories] = useState([]);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
     });
   }, []);
+
+  useEffect(async () => {
+    await fetch("http://192.168.100.16:3000/features")
+      .then((response) => response.json())
+      .then((data) => {
+        setFeaturedCategories(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
       {/* Header */}
@@ -57,30 +71,19 @@ const HomeScreen = () => {
       </View>
 
       {/* Body */}
-      <ScrollView contentContainerStyle="bg-gray-100 flex-1">
+      <ScrollView className="" contentContainerStyle="bg-gray-100 flex-1">
         {/* Categories */}
         <Categories />
 
         {/* Featured */}
-        <FeaturedRow
-          id="1"
-          title="Featured"
-          description="Paid placements from our partners"
-        />
-
-        {/* Tasty discounts */}
-        <FeaturedRow
-          id="2"
-          title="Tasty discounts"
-          description="Everyone's been enjoying these juicy discounts!"
-        />
-
-        {/* Offers near you */}
-        <FeaturedRow
-          id="3"
-          title="Offers near you!"
-          description="Why not support your local restaurant tonight!"
-        />
+        {featuredCategories?.map((category) => (
+          <FeaturedRow
+            key={category.id}
+            id={category.id}
+            title={category.title}
+            description={category.description}
+          />
+        ))}
       </ScrollView>
     </SafeAreaView>
   );
