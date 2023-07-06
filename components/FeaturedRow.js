@@ -1,9 +1,22 @@
 import { View, Text, ScrollView } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ArrowRightIcon } from "react-native-heroicons/outline";
 import RestaurantCard from "./RestaurantCard";
 
 const FeaturedRow = ({ id, title, description }) => {
+  const [restaurants, setRestaurants] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://192.168.100.16:3000/features/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setRestaurants(data?.restaurants);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
   return (
     <View>
       <View className="mt-4 flex-row items-center justify-between px-4">
@@ -18,18 +31,21 @@ const FeaturedRow = ({ id, title, description }) => {
         className="pt-4"
       >
         {/* RestaurantCards */}
-        <RestaurantCard
-          id={123}
-          imgUrl={"https://picsum.photos/200/200"}
-          title={"Yo! Sushi"}
-          rating={4.5}
-          genre={"Japanes"}
-          address={"123 Main St"}
-          short_description={"This is a Test description"}
-          dishes={[]}
-          long={23}
-          lat={10}
-        />
+        {restaurants?.map((restaurant) => (
+          <RestaurantCard
+            key={restaurant.id}
+            id={restaurant.id}
+            imgUrl={restaurant.imgUrl}
+            title={restaurant.title}
+            rating={restaurant.rating}
+            genre={restaurant.genre}
+            address={restaurant.address}
+            short_description={restaurant.short_description}
+            dishes={[]}
+            long={restaurant.long}
+            lat={restaurant.lat}
+          />
+        ))}
       </ScrollView>
     </View>
   );

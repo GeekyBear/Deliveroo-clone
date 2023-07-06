@@ -6,7 +6,7 @@ const CategoryCard = ({ imgUrl, title }) => {
     <TouchableOpacity className="relative mr-2">
       <Image
         source={{
-          uri: "https://picsum.photos/200/200",
+          uri: imgUrl,
         }}
         className="h-20 w-20 rounded"
       />
