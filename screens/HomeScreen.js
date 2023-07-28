@@ -29,15 +29,19 @@ const HomeScreen = () => {
     });
   }, []);
 
-  useEffect(async () => {
-    await fetch("http://192.168.100.16:3000/features")
-      .then((response) => response.json())
-      .then((data) => {
-        setFeaturedCategories(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  useEffect(() => {
+    async function fetchData() {
+      await fetch("http://192.168.100.200:3000/features")
+        .then((response) => response.json())
+        .then((data) => {
+          setFeaturedCategories(data);
+        })
+        .catch((error) => {
+          console.log("wtf");
+          console.error(error.message);
+        });
+    }
+    fetchData();
   }, []);
 
   return (

@@ -16,6 +16,7 @@ const RestaurantCard = ({
   long,
   lat,
 }) => {
+  console.log(dishes);
   const navigation = useNavigation();
   return (
     <TouchableOpacity
