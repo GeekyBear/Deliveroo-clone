@@ -7,7 +7,7 @@ const FeaturedRow = ({ id, title, description }) => {
   const [restaurants, setRestaurants] = useState([]);
 
   useEffect(() => {
-    fetch(`http://192.168.100.16:3000/features/${id}`)
+    fetch(`http://192.168.100.200:3000/features/${id}`)
       .then((response) => response.json())
       .then((data) => {
         setRestaurants(data?.restaurants);
@@ -26,7 +26,7 @@ const FeaturedRow = ({ id, title, description }) => {
       <Text className="text-xs text-gray-500 px-4">{description}</Text>
       <ScrollView
         horizontal
-        contentContainerStyle={{ paddingHorizontal: 15 }}
+        contentContainerStyle={{ paddingHorizontal: 15, paddingVertical: 10 }}
         showsHorizontalScrollIndicator={false}
         className="pt-4"
       >
@@ -41,7 +41,7 @@ const FeaturedRow = ({ id, title, description }) => {
             genre={restaurant.genre}
             address={restaurant.address}
             short_description={restaurant.short_description}
-            dishes={[]}
+            dishes={restaurant.dishes}
             long={restaurant.long}
             lat={restaurant.lat}
           />
